@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+}
+
+#loading {
+  text-align: center;
+}
+
+button {
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+
+#language-selection, #translation-section {
+  margin-top: 20px;
+}
+
+h2 {
+  text-align: center;
+} 

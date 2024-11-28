@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Athena</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div id="content">
+    <h2>Athena</h2>
+    <div id="language-selection">
+      <label for="language">Select your preferred language:</label>
+      <select id="language"></select>
+      <button id="save-language">Save Language</button>
+    </div>
+    <div id="translation-section" style="display:none;">
+      <button id="translate-button">Translate Article</button>
+      <button id="reset-language">Change Language</button>
+    </div>
+    <div id="loading" style="display:none;">
+      <p>Translating... Please wait.</p>
+    </div>
+  </div>
+  <script src="sidepanel.js"></script>
+</body>
+</html> 

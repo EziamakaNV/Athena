@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Athena",
+  "version": "1.0",
+  "description": "Translate English articles on Medium.com to your preferred language.",
+  "permissions": ["storage", "scripting", "tabs", "activeTab"],
+  "host_permissions": ["https://medium.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Translate Medium Articles",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://medium.com/*"],
+      "js": ["contentScript.js"],
+      "run_at": "document_end"
+    }
+  ]
+} 
