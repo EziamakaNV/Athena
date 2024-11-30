@@ -1,13 +1,30 @@
 # Athena Chrome Extension
 
-Athena is a Chrome extension that translates English articles on Medium.com to your preferred language. It uses the Chrome AI Translation API to perform on-device translations.
+Athena is a Chrome extension that breaks down language barriers on Medium.com, making content accessible to readers worldwide and helping writers reach a global audience.
+
+## Why Athena?
+
+Medium.com hosts millions of articles, but according to Medium's official documentation, the majority of content is written in English. This creates two significant challenges:
+
+1. **Reader Accessibility**: Many potential readers who aren't fluent in English are excluded from accessing valuable content, insights, and knowledge shared on Medium.
+
+2. **Writer Limitations**: Writers who are more comfortable writing in their native language face barriers in reaching Medium's predominantly English-speaking audience, limiting their ability to:
+   - Share their expertise with a global readership
+   - Build an international following
+   - Participate in Medium's Partner Program for earning potential
+
+Athena solves these challenges by providing:
+- Real-time translation of English articles for readers
+- Translation support for writers creating content in their native language
+- On-device translation using Chrome's AI Translation API for privacy and performance
 
 ## Features
 
-- Translates English articles on Medium.com to the user's selected language.
-- Displays a chat interface in the side panel.
-- All UI texts are translated to the user's preferred language.
-- Mode to translate user input from the preferred language to English.
+- Translates English articles on Medium.com to the user's selected language
+- Provides a user-friendly chat interface in the side panel
+- Translates all UI elements to the user's preferred language
+- Offers a writing mode to translate content from any language to English
+- Uses Chrome's on-device AI Translation for secure and fast translations
 
 ## Installation
 
