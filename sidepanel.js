@@ -10,7 +10,6 @@ const resetLanguageButton = document.getElementById('reset-language');
 const translationSection = document.getElementById('translation-section');
 const languageSelectionSection = document.getElementById('language-selection');
 const loadingSection = document.getElementById('loading');
-const userInputForm = document.getElementById('user-input-form');
 const userInputField = document.getElementById('user-input');
 const writingModeSection = document.getElementById('writing-mode-section');
 const writingTranslateButton = document.getElementById('writing-translate-button');
@@ -219,7 +218,6 @@ function updateUIMode() {
     translationSection.style.display = 'none';
     languageSelectionSection.style.display = 'none';
     loadingSection.style.display = 'none';
-    userInputForm.style.display = 'none';
     writingModeSection.style.display = 'block';
   } else {
     console.log('Side Panel: Switched to reading mode.');
@@ -297,6 +295,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateUIMode();
   });
 });
-
-// Event listener for user input form
-userInputForm.addEventListener('submit', handleUserInput); 
