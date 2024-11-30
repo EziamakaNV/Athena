@@ -98,21 +98,23 @@ For additional support, please open an issue with:
 
 5. Click **"Translate Article"** to translate the current Medium article into your preferred language.
 
-6. After translation, **all UI texts in the side panel will also be translated** into your preferred language.
+6. **UI Language Toggle**:
+   - Use the "Switch to English" / "Switch to [Your Language]" button at the bottom of the panel
+   - This allows you to toggle the interface language between English and your preferred language
+   - Your choice persists across sessions
+   - The article translation remains in your preferred language regardless of UI language setting
 
 7. **Writing Mode on Medium.com**:
-
-   - When you navigate to Medium's article creation pages (`https://medium.com/p/*/edit` or `https://medium.com/new-story`), Athena will switch to writing mode.
+   - When you navigate to Medium's article creation pages (`https://medium.com/p/*/edit` or `https://medium.com/new-story`), Athena will switch to writing mode
    - **In Writing Mode**:
-     - Write your article in your preferred language as normal.
-     - Open the side panel, and you'll see a message indicating you're in writing mode.
-     - When you're ready, click the **"Translate My Writing"** button in the side panel.
-     - Your content will be translated into English directly in the editor.
+     - Write your article in your preferred language as normal
+     - Open the side panel, and you'll see a message indicating you're in writing mode
+     - When you're ready, click the **"Translate My Writing"** button in the side panel
+     - Your content will be translated into English directly in the editor
 
 8. **Switching Back to Reading Mode**:
-
-   - When you navigate away from the writing pages, Athena will switch back to reading mode automatically.
-   - The side panel will return to its previous state, allowing you to translate articles and interact as before.
+   - When you navigate away from the writing pages, Athena will switch back to reading mode automatically
+   - The side panel will return to its previous state, allowing you to translate articles and interact as before
 
 ## License
 
