@@ -28,21 +28,63 @@ Athena solves these challenges by providing:
 
 ## Installation
 
+### Prerequisites
+
+1. **Chrome Browser Requirements**:
+   - Chrome must be installed on Windows, Mac, or Linux
+   - Download [Chrome Canary](https://www.google.com/chrome/canary/) (version ≥ 131.0.6778.2)
+
+2. **Enable Translation API**:
+   - Navigate to `chrome://flags/#translation-api`
+   - Select "Enabled"
+   - For testing multiple language pairs, select "Enabled without language pack limit"
+   - Relaunch Chrome
+
+3. **Download Translation Components**:
+   - Visit https://translation-demo.glitch.me/
+   - Click "from en to es" and "from en to ja" under translate()
+   - Wait for background downloads to complete
+   - Monitor progress at `chrome://components` (look for TranslateKit components)
+
+4. **Verify API Availability**:
+   - Open Chrome DevTools (F12)
+   - In console, run:
+     ```javascript
+     await translation.canTranslate({sourceLanguage: "en", targetLanguage: "es"});
+     ```
+   - If returns "readily", setup is complete
+   - If fails, double-check previous steps or report issues with environment details
+
+### Extension Installation
+
 1. **Clone or download this repository** to your local machine.
 
 2. **Get the Origin Trial Token**:
-   - Visit the [Translator API Origin Trial](https://developer.chrome.com/docs/ai/translator-api/) page.
-   - Register your extension ID to receive the Origin Trial token.
-   - Replace the placeholder token in `contentScript.js` with your token.
+   - Visit the [Translator API Origin Trial](https://developer.chrome.com/docs/ai/translator-api/) page
+   - Register your extension ID to receive the Origin Trial token
+   - Replace the placeholder token in `contentScript.js` with your token
 
 3. **Load the Extension in Chrome**:
-   - Open Google Chrome and navigate to `chrome://extensions/`.
-   - Enable "Developer mode" by toggling the switch in the top right corner.
-   - Click on "Load unpacked" and select the directory where you downloaded the extension.
-   - The extension "Athena" should now appear in your list of extensions.
+   - Open Google Chrome and navigate to `chrome://extensions/`
+   - Enable "Developer mode" by toggling the switch in the top right corner
+   - Click on "Load unpacked" and select the directory where you downloaded the extension
+   - The extension "Athena" should now appear in your list of extensions
 
 4. **Enable Side Panel**:
-   - Ensure that the Chrome Side Panel feature is enabled in your browser.
+   - Ensure that the Chrome Side Panel feature is enabled in your browser
+
+### Troubleshooting
+
+If you encounter issues with the Translation API:
+1. Verify Chrome Canary version is up to date
+2. Confirm all TranslateKit components are downloaded
+3. Check console for specific error messages
+4. Ensure Origin Trial token is valid and properly configured
+
+For additional support, please open an issue with:
+- Chrome version details
+- Error messages
+- Steps to reproduce the issue
 
 ## Usage
 
