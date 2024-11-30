@@ -41,9 +41,19 @@ Athena is a Chrome extension that translates English articles on Medium.com to y
 
 6. After translation, **all UI texts in the side panel will also be translated** into your preferred language.
 
-7. **To translate text from your preferred language to English**:
-   - Use the input field at the bottom of the side panel to type your message.
-   - Your message will be displayed, and Athena will provide the English translation.
+7. **Writing Mode on Medium.com**:
+
+   - When you navigate to Medium's article creation pages (`https://medium.com/p/*/edit` or `https://medium.com/new-story`), Athena will switch to writing mode.
+   - **In Writing Mode**:
+     - Write your article in your preferred language as normal.
+     - Open the side panel, and you'll see a message indicating you're in writing mode.
+     - When you're ready, click the **"Translate My Writing"** button in the side panel.
+     - Your content will be translated into English directly in the editor.
+
+8. **Switching Back to Reading Mode**:
+
+   - When you navigate away from the writing pages, Athena will switch back to reading mode automatically.
+   - The side panel will return to its previous state, allowing you to translate articles and interact as before.
 
 ## License
 

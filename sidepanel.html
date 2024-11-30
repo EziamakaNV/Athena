@@ -30,11 +30,16 @@
         <p class="translatable">Translating... Please wait.</p>
       </div>
 
-      <!-- User input for translating from preferred language to English -->
-      <form id="user-input-form" style="display:none;">
-        <input type="text" id="user-input" class="input-field" placeholder="Type your message..." />
-        <button type="submit" class="action-button translatable">Send</button>
-      </form>
+      <!-- Writing Mode Section -->
+      <div id="writing-mode-section" style="display:none;">
+        <p class="translatable">You've switched to writing mode. Write your article as normal in your preferred language. When you're done, click the button below to translate your content to English.</p>
+        <button id="writing-translate-button" class="action-button translatable">Translate My Writing</button>
+      </div>
+
+      <!-- Language Toggle Button -->
+      <button id="toggle-language-button" class="secondary-button translatable">
+        Switch to English
+      </button>
     </div>
   </div>
   <script src="sidepanel.js"></script>

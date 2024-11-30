@@ -49,7 +49,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         document.head.appendChild(style);
         
         const text = document.createElement('p');
-        text.textContent = 'Translating... Please wait.';//await translator.translate('Translating... Please wait.');
+        text.textContent = await translator.translate('Translating... Please wait.');
         text.classList.add('translatable');
         text.style.margin = '0';
         text.style.fontFamily = 'Inter, sans-serif';
@@ -88,6 +88,55 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ success: false });
       }
     });
+    return true; // Indicates we'll send a response asynchronously
+  }
+
+  if (message.action === 'switchMode') {
+    console.log(`Content Script: Switching to ${message.mode} mode.`);
+    if (message.mode === 'writing') {
+      // Inform side panel to switch to writing mode
+      chrome.runtime.sendMessage({ action: 'switchSidePanelMode', mode: 'writing' });
+    } else {
+      // Inform side panel to switch to reading mode
+      chrome.runtime.sendMessage({ action: 'switchSidePanelMode', mode: 'reading' });
+    }
+  }
+
+  if (message.action === 'translateWriting') {
+    console.log('Content Script: Received translateWriting message.');
+    const preferredLanguage = message.preferredLanguage || 'en';
+    if ('translation' in self && 'createTranslator' in self.translation) {
+      (async () => {
+        try {
+          const translator = await translation.createTranslator({
+            sourceLanguage: preferredLanguage,
+            targetLanguage: 'en',
+          });
+
+          // Select elements within the editor that need to be translated
+          const editorElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li');
+
+          for (const element of editorElements) {
+            const text = element.innerText;
+            console.log(`Content Script: Translating editor text: ${text.substring(0, 50)}...`);
+            try {
+              const translatedText = await translator.translate(text);
+              element.innerText = translatedText;
+            } catch (elementError) {
+              console.error('Content Script: Failed to translate editor element:', elementError);
+            }
+          }
+
+          sendResponse({ success: true });
+        } catch (error) {
+          console.error('Content Script: Translation failed:', error);
+          sendResponse({ success: false });
+        }
+      })();
+    } else {
+      console.error('Content Script: Translation API not available.');
+      sendResponse({ success: false });
+    }
     return true; // Indicates we'll send a response asynchronously
   }
 }); 

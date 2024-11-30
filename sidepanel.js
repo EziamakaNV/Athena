@@ -12,8 +12,12 @@ const languageSelectionSection = document.getElementById('language-selection');
 const loadingSection = document.getElementById('loading');
 const userInputForm = document.getElementById('user-input-form');
 const userInputField = document.getElementById('user-input');
+const writingModeSection = document.getElementById('writing-mode-section');
+const writingTranslateButton = document.getElementById('writing-translate-button');
 
 let preferredLanguage = '';
+let uiLanguage = 'preferred';
+let currentMode = 'reading';
 
 // Populate the language selection dropdown
 function populateLanguages() {
@@ -33,18 +37,20 @@ function languageTagToHumanReadable(languageTag, targetLanguage) {
   return displayNames.of(languageTag);
 }
 
-// Load the saved language preference
-async function loadPreferredLanguage() {
-  console.log('Side Panel: Loading preferred language.');
-  chrome.storage.sync.get('preferredLanguage', async (data) => {
+// Load the saved language and UI preferences
+async function loadPreferences() {
+  console.log('Side Panel: Loading preferences.');
+  chrome.storage.sync.get(['preferredLanguage', 'uiLanguage'], async (data) => {
     if (data.preferredLanguage) {
       console.log(`Side Panel: Preferred language is ${data.preferredLanguage}.`);
+      preferredLanguage = data.preferredLanguage;
+      uiLanguage = data.uiLanguage || 'preferred';
+      await updateUIToPreferredLanguage();
+      updateToggleButtonText();
+
       languageSelectionSection.style.display = 'none';
       translationSection.style.display = 'block';
-      preferredLanguage = data.preferredLanguage;
-      //await updateUIToPreferredLanguage();
     } else {
-      console.log('Side Panel: No preferred language set.');
       languageSelectionSection.style.display = 'block';
       translationSection.style.display = 'none';
     }
@@ -66,14 +72,29 @@ async function translateText(text, sourceLanguage, targetLanguage) {
   }
 }
 
-// Function to update UI texts to the selected language
+// Function to update UI texts based on UI language preference
 async function updateUIToPreferredLanguage() {
   const elementsToTranslate = document.querySelectorAll('.translatable');
   for (const element of elementsToTranslate) {
     const originalText = element.getAttribute('data-original-text') || element.textContent;
     element.setAttribute('data-original-text', originalText);
-    const translatedText = await translateText(originalText, 'en', preferredLanguage);
-    element.textContent = translatedText;
+
+    if (uiLanguage === 'preferred') {
+      const translatedText = await translateText(originalText, 'en', preferredLanguage);
+      element.textContent = translatedText;
+    } else {
+      element.textContent = originalText;
+    }
+  }
+}
+
+// Function to update the toggle button text
+function updateToggleButtonText() {
+  const toggleButton = document.getElementById('toggle-language-button');
+  if (uiLanguage === 'preferred') {
+    toggleButton.textContent = 'Switch to English';
+  } else {
+    toggleButton.textContent = `Switch to ${languageTagToHumanReadable(preferredLanguage, navigator.language)}`;
   }
 }
 
@@ -82,7 +103,7 @@ async function showTranslationCompleteMessage() {
   const messagesContainer = document.getElementById('messages');
   const messageBubble = document.createElement('div');
   messageBubble.classList.add('message-bubble', 'assistant');
-  const message = 'Translation completed successfully!';//await translateText('Translation completed successfully!', 'en', preferredLanguage);
+  const message = await translateText('Translation completed successfully!', 'en', preferredLanguage);
   messageBubble.innerHTML = `<p>${message}</p>`;
   messagesContainer.appendChild(messageBubble);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -139,7 +160,7 @@ saveLanguageButton.addEventListener('click', async () => {
       chrome.storage.sync.set({ preferredLanguage: selectedLanguage }, async () => {
         console.log('Side Panel: Preferred language saved.');
         preferredLanguage = selectedLanguage;
-        //await updateUIToPreferredLanguage();
+        await updateUIToPreferredLanguage();
         languageSelectionSection.style.display = 'none';
         translationSection.style.display = 'block';
       });
@@ -178,22 +199,102 @@ resetLanguageButton.addEventListener('click', () => {
   console.log('Side Panel: Reset language button clicked.');
   chrome.storage.sync.remove('preferredLanguage', () => {
     console.log('Side Panel: Preferred language removed.');
-    loadPreferredLanguage();
+    loadPreferences();
   });
+});
+
+// Listen for messages from content script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'switchSidePanelMode') {
+    currentMode = message.mode;
+    updateUIMode();
+  }
+});
+
+// Function to update UI based on mode
+function updateUIMode() {
+  if (currentMode === 'writing') {
+    console.log('Side Panel: Switched to writing mode.');
+    // Display writing mode UI
+    translationSection.style.display = 'none';
+    languageSelectionSection.style.display = 'none';
+    loadingSection.style.display = 'none';
+    userInputForm.style.display = 'none';
+    writingModeSection.style.display = 'block';
+  } else {
+    console.log('Side Panel: Switched to reading mode.');
+    // Display reading mode UI
+    writingModeSection.style.display = 'none';
+    // Restore previous UI based on whether preferred language is set
+    chrome.storage.sync.get('preferredLanguage', async (data) => {
+      if (data.preferredLanguage) {
+        languageSelectionSection.style.display = 'none';
+        translationSection.style.display = 'block';
+      } else {
+        languageSelectionSection.style.display = 'block';
+        translationSection.style.display = 'none';
+      }
+    });
+  }
+}
+
+// New function to handle translation in writing mode
+async function translateWritingContent() {
+  console.log('Side Panel: Translating writing content.');
+  if ('translation' in self && 'createTranslator' in self.translation) {
+    const translator = await translation.createTranslator({
+      sourceLanguage: preferredLanguage,
+      targetLanguage: 'en',
+    });
+
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'translateWriting', preferredLanguage }, async (response) => {
+        if (response && response.success) {
+          console.log('Side Panel: Writing content translated.');
+          // Provide feedback to the user
+          showTranslationCompleteMessage();
+        } else {
+          console.error('Side Panel: Failed to translate writing content.');
+        }
+      });
+    });
+  } else {
+    console.error('Translation API not available.');
+  }
+}
+
+// Event listener for writing mode translate button
+writingTranslateButton.addEventListener('click', translateWritingContent);
+
+// Event listener for toggle button
+document.getElementById('toggle-language-button').addEventListener('click', () => {
+  uiLanguage = uiLanguage === 'preferred' ? 'en' : 'preferred';
+
+  // Save the UI language preference
+  chrome.storage.sync.set({ uiLanguage }, () => {
+    console.log(`Side Panel: UI language preference saved as ${uiLanguage}.`);
+  });
+
+  // Update UI texts and button text
+  updateUIToPreferredLanguage();
+  updateToggleButtonText();
 });
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('Side Panel: Document loaded.');
   populateLanguages();
-  await loadPreferredLanguage();
+  await loadPreferences();
 
-  // If the preferred language is set, update UI texts
-  chrome.storage.sync.get('preferredLanguage', async (data) => {
-    if (data.preferredLanguage) {
-      preferredLanguage = data.preferredLanguage;
-      //await updateUIToPreferredLanguage();
+  // Get current tab to set mode
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const tab = tabs[0];
+    if (tab.url && tab.url.match(/^https:\/\/medium\.com\/(p\/.*\/edit|new-story)/)) {
+      currentMode = 'writing';
+    } else {
+      currentMode = 'reading';
     }
+    updateUIMode();
   });
 });
 
