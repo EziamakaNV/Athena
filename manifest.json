@@ -3,7 +3,7 @@
   "name": "Athena",
   "version": "1.0",
   "description": "Translate English articles on Medium.com to your preferred language.",
-  "permissions": ["storage", "scripting", "tabs", "activeTab"],
+  "permissions": ["storage", "scripting", "tabs", "activeTab", "sidePanel"],
   "host_permissions": ["https://medium.com/*"],
   "background": {
     "service_worker": "background.js"
@@ -23,8 +23,7 @@
   "content_scripts": [
     {
       "matches": ["https://medium.com/*"],
-      "js": ["contentScript.js"],
-      "run_at": "document_end"
+      "js": ["contentScript.js"]
     }
   ]
 } 
