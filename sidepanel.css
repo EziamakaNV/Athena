@@ -37,6 +37,11 @@ body {
   margin-right: auto;
 }
 
+.message-bubble.user {
+  background-color: #dde1e7;
+  margin-left: auto;
+}
+
 .message-bubble p {
   margin: 0;
   font-size: 14px;
@@ -100,4 +105,14 @@ body {
 
 #language-selection, #translation-section {
   margin-bottom: 16px;
+}
+
+#user-input-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#user-input {
+  flex-grow: 1;
 } 

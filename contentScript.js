@@ -30,7 +30,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         spinner.style.left = '50%';
         spinner.style.transform = 'translate(-50%, -50%)';
         spinner.style.zIndex = '9999';
-        spinner.innerHTML = '<p>Translating... Please wait.</p>';
+        spinner.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        spinner.style.padding = '20px';
+        spinner.style.borderRadius = '10px';
+        spinner.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        
+        const spinnerAnimation = document.createElement('div');
+        spinnerAnimation.style.width = '40px';
+        spinnerAnimation.style.height = '40px';
+        spinnerAnimation.style.margin = '0 auto 10px';
+        spinnerAnimation.style.border = '4px solid #f3f3f3';
+        spinnerAnimation.style.borderTop = '4px solid #ff9966';
+        spinnerAnimation.style.borderRadius = '50%';
+        spinnerAnimation.style.animation = 'spin 1s linear infinite';
+        
+        const style = document.createElement('style');
+        style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
+        
+        const text = document.createElement('p');
+        text.textContent = await translator.translate('Translating... Please wait.');
+        text.classList.add('translatable');
+        text.style.margin = '0';
+        text.style.fontFamily = 'Inter, sans-serif';
+        text.style.color = '#333';
+        
+        spinner.appendChild(spinnerAnimation);
+        spinner.appendChild(text);
         document.body.appendChild(spinner);
 
         try {

@@ -11,24 +11,30 @@
   <div id="chat-container">
     <div id="messages">
       <div class="message-bubble assistant">
-        <p>Hello! I'm Athena, your translation assistant. How can I help you today? 😊</p>
+        <p class="translatable">Hello! I'm Athena, your translation assistant. How can I help you today? 😊</p>
       </div>
     </div>
     
     <div id="controls">
       <div id="language-selection">
         <select id="language" class="input-field"></select>
-        <button id="save-language" class="action-button">Save Language</button>
+        <button id="save-language" class="action-button translatable">Save Preferred Language</button>
       </div>
 
       <div id="translation-section" style="display:none;">
-        <button id="translate-button" class="action-button">Translate Article</button>
-        <button id="reset-language" class="secondary-button">Change Language</button>
+        <button id="translate-button" class="action-button translatable">Translate Article</button>
+        <button id="reset-language" class="secondary-button translatable">Change Language</button>
       </div>
 
       <div id="loading" style="display:none;">
-        <p>Translating... Please wait.</p>
+        <p class="translatable">Translating... Please wait.</p>
       </div>
+
+      <!-- User input for translating from preferred language to English -->
+      <form id="user-input-form" style="display:none;">
+        <input type="text" id="user-input" class="input-field" placeholder="Type your message..." />
+        <button type="submit" class="action-button translatable">Send</button>
+      </form>
     </div>
   </div>
   <script src="sidepanel.js"></script>
