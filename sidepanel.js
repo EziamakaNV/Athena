@@ -42,7 +42,7 @@ async function loadPreferredLanguage() {
       languageSelectionSection.style.display = 'none';
       translationSection.style.display = 'block';
       preferredLanguage = data.preferredLanguage;
-      await updateUIToPreferredLanguage();
+      //await updateUIToPreferredLanguage();
     } else {
       console.log('Side Panel: No preferred language set.');
       languageSelectionSection.style.display = 'block';
@@ -82,7 +82,7 @@ async function showTranslationCompleteMessage() {
   const messagesContainer = document.getElementById('messages');
   const messageBubble = document.createElement('div');
   messageBubble.classList.add('message-bubble', 'assistant');
-  const message = await translateText('Translation completed successfully!', 'en', preferredLanguage);
+  const message = 'Translation completed successfully!';//await translateText('Translation completed successfully!', 'en', preferredLanguage);
   messageBubble.innerHTML = `<p>${message}</p>`;
   messagesContainer.appendChild(messageBubble);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -139,7 +139,7 @@ saveLanguageButton.addEventListener('click', async () => {
       chrome.storage.sync.set({ preferredLanguage: selectedLanguage }, async () => {
         console.log('Side Panel: Preferred language saved.');
         preferredLanguage = selectedLanguage;
-        await updateUIToPreferredLanguage();
+        //await updateUIToPreferredLanguage();
         languageSelectionSection.style.display = 'none';
         translationSection.style.display = 'block';
       });
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   chrome.storage.sync.get('preferredLanguage', async (data) => {
     if (data.preferredLanguage) {
       preferredLanguage = data.preferredLanguage;
-      await updateUIToPreferredLanguage();
+      //await updateUIToPreferredLanguage();
     }
   });
 });

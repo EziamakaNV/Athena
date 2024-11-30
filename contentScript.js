@@ -49,7 +49,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         document.head.appendChild(style);
         
         const text = document.createElement('p');
-        text.textContent = await translator.translate('Translating... Please wait.');
+        text.textContent = 'Translating... Please wait.';//await translator.translate('Translating... Please wait.');
         text.classList.add('translatable');
         text.style.margin = '0';
         text.style.fontFamily = 'Inter, sans-serif';
